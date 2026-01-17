@@ -56,7 +56,7 @@ export default function CourseActionsCard({
   }
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+    <div className="h-full rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="flex items-center gap-3">
         <span className="text-xl">➕</span>
         <div>
