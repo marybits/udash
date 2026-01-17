@@ -224,7 +224,7 @@ def get_all_data(requirements, course_grades):
         "cgpa": calculate_cgpa(course_grades),
         "electives": [
             r for r in degree_requirements
-            if r.get("type") in ["free_elective", "category_total", "optional_pool"]
+            if r.get("type") in ["optional_pool", "free_elective", "category_total", "optional_pool"]
         ]
 
     }
