@@ -12,6 +12,8 @@ export default function CourseActionsCard({
   const [inProgCourse, setInProgCourse] = useState("");
   const [gradeCourse, setGradeCourse] = useState("");
   const [grade, setGrade] = useState("A");
+  const [electiveName, setElectiveName] = useState("");
+  const [electiveCredits, setElectiveCredits] = useState("3");
   const [status, setStatus] = useState("");
 
   const timerRef = useRef(null);
@@ -44,15 +46,46 @@ export default function CourseActionsCard({
       await action();
       setStatus("Saved ✅");
 
-     
       onUpdated?.();
 
-      
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setStatus(""), 1200);
     } catch (e) {
       setStatus(e?.message || "Error");
     }
+  }
+
+  async function handleAddElective() {
+    if (!electiveName.trim()) {
+      setStatus("Please enter course name");
+      return;
+    }
+
+    const credits = parseInt(electiveCredits);
+    if (isNaN(credits) || credits <= 0) {
+      setStatus("Please enter valid credits");
+      return;
+    }
+
+    await run(async () => {
+      // You'll need to implement this API endpoint
+      const response = await fetch("/api/dashboard/elective", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          courseName: electiveName.trim(),
+          credits,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to add elective");
+      }
+
+      setElectiveName("");
+      setElectiveCredits("3");
+    });
   }
 
   return (
@@ -124,6 +157,37 @@ export default function CourseActionsCard({
               className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
               onClick={() => run(() => addInProgress(inProgCourse))}
               disabled={!inProgCourse}
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        {/* Add elective */}
+        <div>
+          <div className="text-sm font-semibold text-gray-900">Add elective course</div>
+          <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <input
+              type="text"
+              placeholder="Course name"
+              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm"
+              value={electiveName}
+              onChange={(e) => setElectiveName(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Credits"
+              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm"
+              value={electiveCredits}
+              onChange={(e) => setElectiveCredits(e.target.value)}
+              min="1"
+            />
+
+            <button
+              className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
+              onClick={handleAddElective}
+              disabled={!electiveName.trim()}
             >
               Add
             </button>
