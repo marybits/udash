@@ -104,63 +104,62 @@ export default function DashboardPage() {
           completedCredits={Number(ui.completedCredits ?? 0)}
           requirements={Array.isArray(ui.requirements) ? ui.requirements : []}
           />
-        </section>
+      </section>
 
 
-        {/* Bottom grid */}
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* LEFT COLUMN: make the SMALL card the functional one */}
+        {/* Top grid - Course Actions and Credits Distribution side by side */}
+        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <section className="lg:col-span-1">
             <CourseActionsCard
               availableCourses={ui.availableCourses || []}
               completedCourses={ui.completedCourses || []}
               onUpdated={load}
             />
-
-            <div id="distribution" className="mt-6 scroll-mt-24">
-              <CreditsDistributionCard requirements={requirements} />
-            </div>
           </section>
 
-          {/* Transcript */}
-          <section id="transcript" className="scroll-mt-24 lg:col-span-2">
-            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-              <div className="flex items-start justify-between gap-6">
-                <div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">🎓</span>
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      Academic Transcript
-                    </h3>
-                  </div>
-                  <p className="mt-2 text-gray-500">
-                    {transcriptCreditsCompleted} credits completed
-                  </p>
-                </div>
-
-                <div className="text-right">
-                  <div className="text-4xl font-extrabold text-gray-900">
-                    {Number.isFinite(cumulativeGPA) ? cumulativeGPA.toFixed(2) : "0.00"}
-                  </div>
-                  <div className="text-gray-500">Cumulative GPA</div>
-                </div>
-              </div>
-
-              <div className="mt-8 space-y-10">
-                {transcriptYears.length === 0 ? (
-                  <div className="text-sm text-gray-500">No transcript data yet.</div>
-                ) : (
-                  transcriptYears.map((y) => (
-                    <div key={y.year} className="border-t border-gray-200 pt-8">
-                      <div className="text-3xl font-extrabold text-gray-900">{y.year}</div>
-                      <div className="text-gray-500">Academic Year {y.academicYear}</div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+          <section id="distribution" className="scroll-mt-24 lg:col-span-1">
+            <CreditsDistributionCard requirements={requirements} />
           </section>
         </div>
+
+        {/* Transcript - Full width below */}
+        <section id="transcript" className="mt-8 scroll-mt-24">
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+            <div className="flex items-start justify-between gap-6">
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">🎓</span>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    Academic Transcript
+                  </h3>
+                </div>
+                <p className="mt-2 text-gray-500">
+                  {transcriptCreditsCompleted} credits completed
+                </p>
+              </div>
+
+              <div className="text-right">
+                <div className="text-4xl font-extrabold text-gray-900">
+                  {Number.isFinite(cumulativeGPA) ? cumulativeGPA.toFixed(2) : "0.00"}
+                </div>
+                <div className="text-gray-500">Cumulative GPA</div>
+              </div>
+            </div>
+
+            <div className="mt-8 space-y-10">
+              {transcriptYears.length === 0 ? (
+                <div className="text-sm text-gray-500">No transcript data yet.</div>
+              ) : (
+                transcriptYears.map((y) => (
+                  <div key={y.year} className="border-t border-gray-200 pt-8">
+                    <div className="text-3xl font-extrabold text-gray-900">{y.year}</div>
+                    <div className="text-gray-500">Academic Year {y.academicYear}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

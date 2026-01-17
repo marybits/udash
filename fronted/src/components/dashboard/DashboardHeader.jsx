@@ -14,7 +14,7 @@ export default function DashboardHeader() {
 
       {/* Subtitle */}
       <p className="mt-2 text-lg text-gray-500">
-        Bachelor of Science in Computer Science • Expected Graduation: May 2027
+        Bachelor of Science in Computer Science • Expected Graduation: May 2029
       </p>
 
       {/* Section Nav */}
