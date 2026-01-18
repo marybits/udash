@@ -1,5 +1,3 @@
-// Current way (vulnerable to double slashes)
-const API = import.meta.env.VITE_API_URL; 
 
 // The Bulletproof way:
 // This works whether API is "https://site.com/" or "https://site.com"
