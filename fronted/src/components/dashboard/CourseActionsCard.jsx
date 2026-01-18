@@ -1,7 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { addCompleted, addInProgress, addGrade } from "../../api/dashboard";
+import { addCompleted, addInProgress, addGrade, addElective } from "../../api/dashboard";
+import Card from "./ui/Card";
 
-const GRADES = ["A+", "A", "A-", "B+", "B", "C+", "C", "D+", "D", "E", "F", "ABS", "EIN"];
+const GRADES = [
+  "A+",
+  "A",
+  "A-",
+  "B+",
+  "B",
+  "C+",
+  "C",
+  "D+",
+  "D",
+  "E",
+  "F",
+  "ABS",
+  "EIN",
+];
 
 export default function CourseActionsCard({
   availableCourses = [],
@@ -12,6 +27,8 @@ export default function CourseActionsCard({
   const [inProgCourse, setInProgCourse] = useState("");
   const [gradeCourse, setGradeCourse] = useState("");
   const [grade, setGrade] = useState("A");
+  const [electiveName, setElectiveName] = useState("");
+  const [electiveCredits, setElectiveCredits] = useState("3");
   const [status, setStatus] = useState("");
 
   const timerRef = useRef(null);
@@ -19,15 +36,15 @@ export default function CourseActionsCard({
   // Keep selections valid when backend data changes
   useEffect(() => {
     setCourse((prev) =>
-      availableCourses.includes(prev) ? prev : (availableCourses[0] || "")
+      availableCourses.includes(prev) ? prev : availableCourses[0] || ""
     );
 
     setInProgCourse((prev) =>
-      availableCourses.includes(prev) ? prev : (availableCourses[0] || "")
+      availableCourses.includes(prev) ? prev : availableCourses[0] || ""
     );
 
     setGradeCourse((prev) =>
-      completedCourses.includes(prev) ? prev : (completedCourses[0] || "")
+      completedCourses.includes(prev) ? prev : completedCourses[0] || ""
     );
   }, [availableCourses, completedCourses]);
 
@@ -44,10 +61,8 @@ export default function CourseActionsCard({
       await action();
       setStatus("Saved ✅");
 
-     
       onUpdated?.();
 
-      
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => setStatus(""), 1200);
     } catch (e) {
@@ -55,13 +70,33 @@ export default function CourseActionsCard({
     }
   }
 
+  async function handleAddElective() {
+    if (!electiveName.trim()) {
+      setStatus("Please enter course name");
+      return;
+    }
+
+    const credits = parseInt(electiveCredits, 10);
+    if (isNaN(credits) || credits <= 0) {
+      setStatus("Please enter valid credits");
+      return;
+    }
+
+    await run(async () => {
+      // Use the imported addElective function instead of direct fetch
+      await addElective(electiveName.trim(), credits);
+      setElectiveName("");
+      setElectiveCredits("3");
+    });
+  }
+
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+    <Card className="h-full p-6">
       <div className="flex items-center gap-3">
         <span className="text-xl">➕</span>
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">Update Courses</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="text-xl font-semibold text-sky-900">Update Courses</h3>
+          <p className="mt-1 text-sm text-slate-500">
             Add completed/in-progress courses and grades
           </p>
         </div>
@@ -70,10 +105,12 @@ export default function CourseActionsCard({
       <div className="mt-6 space-y-6">
         {/* Add completed */}
         <div>
-          <div className="text-sm font-semibold text-gray-900">Mark as completed</div>
+          <div className="text-sm font-semibold text-slate-900">
+            Mark as completed
+          </div>
           <div className="mt-2 flex gap-2">
             <select
-              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
               value={course}
               onChange={(e) => setCourse(e.target.value)}
               disabled={availableCourses.length === 0}
@@ -90,7 +127,8 @@ export default function CourseActionsCard({
             </select>
 
             <button
-              className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
+              type="button"
+              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={() => run(() => addCompleted(course))}
               disabled={!course}
             >
@@ -101,10 +139,12 @@ export default function CourseActionsCard({
 
         {/* Add in progress */}
         <div>
-          <div className="text-sm font-semibold text-gray-900">Mark as in progress</div>
+          <div className="text-sm font-semibold text-slate-900">
+            Mark as in progress
+          </div>
           <div className="mt-2 flex gap-2">
             <select
-              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm"
+              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
               value={inProgCourse}
               onChange={(e) => setInProgCourse(e.target.value)}
               disabled={availableCourses.length === 0}
@@ -121,7 +161,8 @@ export default function CourseActionsCard({
             </select>
 
             <button
-              className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
+              type="button"
+              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={() => run(() => addInProgress(inProgCourse))}
               disabled={!inProgCourse}
             >
@@ -130,12 +171,46 @@ export default function CourseActionsCard({
           </div>
         </div>
 
+        {/* Add elective */}
+        <div>
+          <div className="text-sm font-semibold text-slate-900">
+            Add elective course
+          </div>
+          <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <input
+              type="text"
+              placeholder="Course name"
+              className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              value={electiveName}
+              onChange={(e) => setElectiveName(e.target.value)}
+            />
+
+            <input
+              type="number"
+              placeholder="Credits"
+              className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              value={electiveCredits}
+              onChange={(e) => setElectiveCredits(e.target.value)}
+              min="1"
+            />
+
+            <button
+              type="button"
+              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
+              onClick={handleAddElective}
+              disabled={!electiveName.trim()}
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
         {/* Add grade */}
         <div>
-          <div className="text-sm font-semibold text-gray-900">Set grade</div>
+          <div className="text-sm font-semibold text-slate-900">Set grade</div>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
             <select
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm"
+              className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
               value={gradeCourse}
               onChange={(e) => setGradeCourse(e.target.value)}
               disabled={completedCourses.length === 0}
@@ -152,7 +227,7 @@ export default function CourseActionsCard({
             </select>
 
             <select
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm"
+              className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
               value={grade}
               onChange={(e) => setGrade(e.target.value)}
             >
@@ -164,7 +239,8 @@ export default function CourseActionsCard({
             </select>
 
             <button
-              className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
+              type="button"
+              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={() => run(() => addGrade(gradeCourse, grade))}
               disabled={!gradeCourse}
             >
@@ -173,8 +249,10 @@ export default function CourseActionsCard({
           </div>
         </div>
 
-        {status ? <div className="text-sm text-gray-500">{status}</div> : null}
+        {status ? (
+          <div className="text-sm text-slate-500">{status}</div>
+        ) : null}
       </div>
-    </div>
+    </Card>
   );
 }
