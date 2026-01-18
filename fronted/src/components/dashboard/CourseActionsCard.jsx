@@ -127,6 +127,7 @@ export default function CourseActionsCard({
             </select>
 
             <button
+              type="button"
               className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={() => run(() => addCompleted(course))}
               disabled={!course}
@@ -160,6 +161,7 @@ export default function CourseActionsCard({
             </select>
 
             <button
+              type="button"
               className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={() => run(() => addInProgress(inProgCourse))}
               disabled={!inProgCourse}
@@ -193,6 +195,7 @@ export default function CourseActionsCard({
             />
 
             <button
+              type="button"
               className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={handleAddElective}
               disabled={!electiveName.trim()}
@@ -236,6 +239,7 @@ export default function CourseActionsCard({
             </select>
 
             <button
+              type="button"
               className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:opacity-50"
               onClick={() => run(() => addGrade(gradeCourse, grade))}
               disabled={!gradeCourse}

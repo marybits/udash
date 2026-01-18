@@ -2,7 +2,6 @@ import Badge from "./ui/Badge";
 import Card from "./ui/Card";
 
 function categoryDot(category) {
-  // Calmer, muted dots (no neon)
   if (category === "General Education") return "bg-sky-700";
   if (category === "Core Requirements") return "bg-violet-700";
   if (category === "Major Courses") return "bg-emerald-700";

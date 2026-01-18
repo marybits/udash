@@ -11,24 +11,34 @@ import ScrollToTopButton from "../components/dashboard/ScrollToTopButton.jsx";
 export default function DashboardPage() {
   const [ui, setUi] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false); 
   const [error, setError] = useState("");
 
-  const load = async () => {
+  const load = async ({ silent = false } = {}) => {
     try {
-      setLoading(true);
+      if (silent) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+      
       setError("");
       const json = await fetchDashboardView();
       setUi(json);
     } catch (e) {
       setError(e?.message || "Failed to load dashboard");
-      setUi(null);
+      if (!silent) setUi(null);
     } finally {
-      setLoading(false);
+      if (silent) {
+        setRefreshing(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    load();
+    load({ silent: false });
   }, []);
 
   if (loading) {
@@ -50,7 +60,8 @@ export default function DashboardPage() {
           </div>
 
           <button
-            onClick={load}
+            type="button"
+            onClick={() => load({ silent: false })}
             className="mt-4 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-900 shadow-sm hover:bg-slate-50"
           >
             Retry
@@ -73,6 +84,10 @@ export default function DashboardPage() {
       <div className="mx-auto max-w-6xl px-6 py-10">
         <DashboardHeader />
 
+        {refreshing && (
+          <div className="mt-3 text-xs text-slate-500">Updating…</div>
+        )}
+
         {/* AcademicProgressCard */}
         <section id="progress" className="mt-8 scroll-mt-24">
           <AcademicProgressCard
@@ -91,8 +106,8 @@ export default function DashboardPage() {
             <div className="h-full w-full">
               <CourseActionsCard
                 availableCourses={ui.availableCourses || []}
-                completedCourses={ui.completedCredits || []}
-                onUpdated={load}
+                completedCourses={ui.completedCourses || []}
+                onUpdated={() => load({ silent: true })}
               />
             </div>
           </section>

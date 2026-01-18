@@ -62,49 +62,13 @@ class ElectivePayload(BaseModel):
     courseName: str
     credits: int = 3
 
-## >> app.jsx for later
-'''
-import { useEffect, useState } from "react";
-
-function App() {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/data")
-      .then(res => res.json())
-      .then(data => setItems(data.items));
-  }, []);
-
-  const handleUpdate = () => {
-    fetch("http://localhost:5000/api/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items })
-    })
-    .then(res => res.json())
-    .then(console.log);
-  };
-
-  return (
-    <div>
-      <ul>
-        {items.map((i, idx) => <li key={idx}>{i}</li>)}
-      </ul>
-      <button onClick={handleUpdate}>Send to Python</button>
-    </div>
-  );
-}
-
-export default App;
-
-'''
 
 # to run: uvicorn main:app --reload --port 5000
 
 
 #HARDCODING FOR DEMO
 
-# ✅ Course catalog mapping
+# Course catalog mapping
 COURSE_CATALOG = {
     'ENG 1112': {'name': 'Technical Report Writing', 'credits': 3},
     'ITI 1100': {'name': 'Digital Systems I', 'credits': 3},
@@ -429,7 +393,7 @@ def api_get_dashboard():
 
     elective_codes = [e["code"] for e in electives]
 
-    # required course credits (demo assumption)
+    # required course credits
     required_completed = [c for c in completed if c in required_courses]
     completed_required_credits = len(required_completed) * creditsPerCourse
 
@@ -439,6 +403,9 @@ def api_get_dashboard():
     )
 
     completedCredits = completed_required_credits + completed_elective_credits
+
+    # in-progress credits
+    in_progress_credits = len(in_progress) * creditsPerCourse
 
     # make electives appear in dropdown
     todo_required = compute_todo(requirements)
@@ -450,13 +417,13 @@ def api_get_dashboard():
     requirementsBreakdown = [
         {
             "label": "Required Courses",
-            "done": len(required_completed),
+            "done": completed_required_credits,  
             "req": required_courses_units,
         },
         {
             "label": "In Progress",
-            "done": len(in_progress),
-            "req": len(in_progress),
+            "done": in_progress_credits,  
+            "req": in_progress_credits,  
         },
         {
             "label": "Electives",
@@ -475,10 +442,9 @@ def api_get_dashboard():
 
         "availableCourses": availableCourses,
         "completedCourses": completed,
-        #"completedReqCredits": len(completed) * creditsPerCourse,
         "inProgressCourses": in_progress,
 
-        "transcriptYears": build_transcript_years(requirements, course_grades),  # now dynamic
+        "transcriptYears": build_transcript_years(requirements, course_grades),
 
         # optional debug
         "electives": electives,

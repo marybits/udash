@@ -53,7 +53,7 @@ export default function ProgressSummary({
         </div>
       </div>
 
-      {/* Optional: Remaining Semesters */}
+        {/* Remaining Semesters (if provided) */}
       {remainingSemesters !== null && (
         <div className="mt-6 border-t border-slate-200 pt-6">
           <div className="text-center">

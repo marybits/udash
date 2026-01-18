@@ -59,7 +59,7 @@ export default function DashboardHeader() {
     <header id="top" className="pb-6">
       {/* Title */}
       <h1 className="text-5xl font-extrabold tracking-tight text-slate-900">
-        Academic Progress Tracker
+        uDash
       </h1>
 
       {/* Subtitle */}
