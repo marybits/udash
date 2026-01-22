@@ -24,16 +24,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
-
+# CORS middleware configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://udash-indol.vercel.app",
-        "http://localhost:5173",
-        "http://localhost:5174",
-    ],
-    allow_origin_regex=r"https://.*\.vercel\.app$",
+    allow_origins=["*"],  # Allow all origins temporarily for debugging
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
