@@ -45,6 +45,7 @@ app.add_middleware(
 
 
 
+
 class CoursePayload(BaseModel):
     course: str
 class GradePayload(BaseModel):
