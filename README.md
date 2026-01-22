@@ -1,34 +1,51 @@
-# Welcome!
-uDash is an application designed to simplify student life. It provides a one page over look of the courses you have taken, are currently taking, and need to. uDash was created with Python and React for the uOttaHack 8!
+# 🎓 uDash — Academic Progress Tracker
 
-## React + Vite
+🔗 **Live Demo:** https://udash-indol.vercel.app  
+🖥️ **Backend API:** https://udash-1.onrender.com
 
-  
+uDash is a full-stack web application built to simplify student life by providing
+a clear, one-page overview of:
+- courses completed
+- courses in progress
+- remaining degree requirements
+- GPA and credit progress
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The project was developed during **uOttaHack 8**.
 
-  
+---
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
+- **Frontend:** React + Vite + Tailwind CSS
+- **Backend:** FastAPI (Python)
+- **Deployment:**
+  - Frontend deployed on **Vercel**
+  - Backend API deployed on **Render**
 
-  
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+## 🚀 Features
+- Track completed and in-progress courses
+- View remaining degree requirements
+- Add electives and grades
+- Automatic GPA calculation
+- Live dashboard updates
 
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-  
+## ⚙️ Deployment & Architecture
+- Frontend and backend are deployed separately.
+- Environment variables are used to connect the frontend to the backend API.
+- CORS is configured to allow requests from Vercel domains.
 
-## React Compiler
+---
 
-  
+## 🤝 Collaboration Note
+> This repository is a fork from a hackathon collaboration.  
+> I worked primarily on the **frontend, deployment, and frontend–backend integration**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-  
-
-## Expanding the ESLint configuration
-
-  
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📌 Future Improvements
+- User authentication
+- Persistent database storage
+- Support for multiple degree programs
