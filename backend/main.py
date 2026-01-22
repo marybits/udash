@@ -24,22 +24,21 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+from fastapi.middleware.cors import CORSMiddleware
 
-# allow React dev server to access FastAPI
-'''app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vite default port
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-'''
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://udash-indol.vercel.app",
+    ],
     allow_origin_regex=r"https://.*\.vercel\.app",
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+
 
 
 
@@ -492,9 +491,6 @@ def favicon():
         return FileResponse(path)
     return {}
 
-class ElectivePayload(BaseModel):
-    courseName: str
-    credits: int = 3
 
 @app.post("/api/add_elective")
 def api_add_elective(payload: ElectivePayload):
