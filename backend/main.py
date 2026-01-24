@@ -28,7 +28,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://udash-indol.vercel.app",
+        "https://udash1l.vercel.app",
         "http://localhost:5173",
     ],
     allow_origin_regex=r"https://.*\.vercel\.app",
