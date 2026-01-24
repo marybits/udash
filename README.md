@@ -1,6 +1,6 @@
 # 🎓 uDash — Academic Progress Tracker
 
-🔗 **Live Demo:** https://udash-indol.vercel.app  
+🔗 **Live Demo:** https://udash1l.vercel.app 
 🖥️ **Backend API:** https://udash-1.onrender.com
 
 uDash is a full-stack web application built to simplify student life by providing
